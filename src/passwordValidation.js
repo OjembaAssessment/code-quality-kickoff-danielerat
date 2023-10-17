@@ -21,13 +21,6 @@ export default function isValidPassword(password = "") {
   const notInForbiddenPassword = (string) =>
     !forbiddenPasswords.includes(string);
 
-  const MUST_PASS_CONDITIONS = [
-    hasDigits,
-    hasUpperCase,
-    hasLowerCase,
-    notInForbiddenPassword,
-  ];
-
   // The following line ensures, that password is always a string, like the number 128 -> string "128"
   if (typeof password !== "string") password = String(password);
 
@@ -35,8 +28,10 @@ export default function isValidPassword(password = "") {
 
   if (hasSpecialCharacter(password)) return false;
 
-  // If any of the MUST_PASS_CONDITIONS array return true, the password is invalid
-  if (MUST_PASS_CONDITIONS.some((fn) => !fn(password))) return false;
+  if (!hasDigits(password)) return false;
+  if (!hasUpperCase(password)) return false;
+  if (!hasLowerCase(password)) return false;
+  if (!notInForbiddenPassword(password)) return false;
 
   if (new Set([...password]).size < 4) return false;
 
